@@ -4148,6 +4148,8 @@
                 titleShadowClr: (document.getElementById('titleShadowColor')  || {}).value || '#000000',
                 titleStrokeW:   (document.getElementById('titleStrokeWidth')  || {}).value || '0',
                 titleStrokeClr: (document.getElementById('titleStrokeColor')  || {}).value || '#000000',
+                titleGradient:  (document.getElementById('titleGradient')     || {}).checked || false,
+                titleColor2:    (document.getElementById('titleColor2')       || {}).value || '#ff00ff',
                 // Date styling
                 datePos:        datePos,
                 dateSizePx:     dateSizePx,
@@ -4159,6 +4161,8 @@
                 dateBorderW:    (document.getElementById('dateBorderWidth')   || {}).value || '2',
                 dateBorderRad:  (document.getElementById('dateBorderRadius')  || {}).value || '12',
                 dateAlign:      (document.getElementById('dateAlign')         || {}).value || 'center',
+                dateGradient:   (document.getElementById('dateGradient')      || {}).checked || false,
+                dateColor2:     (document.getElementById('dateColor2')        || {}).value || '#00ffff',
                 // Avatar borders
                 avatarBorderEnabled: (document.getElementById('avatarBorderEnabled') || {}).checked !== false,
                 avatarBorderColor: (document.getElementById('avatarBorderColor') || {}).value || '#9146ff',
@@ -4217,13 +4221,13 @@
                 }
             }
 
-            // ── STEP 3: Theme preset (sets colors/fonts on title+date) ──
+            // ── STEP 3: Theme preset (apply decoration only, saved colors restored in STEP 4/5) ──
             if (p.preset) {
                 var presetBtn = document.querySelector('.theme-btn[data-preset="' + p.preset + '"]');
                 if (presetBtn) {
                     document.querySelectorAll('.theme-btn').forEach(function(b){ b.classList.remove('active'); });
                     presetBtn.classList.add('active');
-                    applyThemePreset(p.preset);
+                    // Only apply decoration, NOT colors (colors are restored in STEP 4/5)
                     applyDecoration(p.preset);
                 }
             }
@@ -4246,11 +4250,18 @@
                 ['titleShadowColor',p.titleShadowClr   || '#000000'],
                 ['titleStrokeWidth',p.titleStrokeW     || '0'],
                 ['titleStrokeColor',p.titleStrokeClr   || '#000000'],
+                ['titleColor2',     p.titleColor2      || '#ff00ff'],
             ];
             titleFields.forEach(function(pair) {
                 var el = document.getElementById(pair[0]);
                 if (el) el.value = pair[1];
             });
+            // Restore title gradient checkbox
+            var titleGradEl = document.getElementById('titleGradient');
+            if (titleGradEl) {
+                titleGradEl.checked = p.titleGradient || false;
+                toggleTitleGradient(); // Apply the gradient state
+            }
             var tShV = document.getElementById('titleShadowVal');
             var tStV = document.getElementById('titleStrokeVal');
             if(tShV) tShV.textContent = (p.titleShadowBlur || '8') + 'px';
@@ -4273,11 +4284,18 @@
                 ['dateBorderWidth', p.dateBorderW     || '2'],
                 ['dateBorderRadius',p.dateBorderRad   || '12'],
                 ['dateAlign',       p.dateAlign       || 'center'],
+                ['dateColor2',      p.dateColor2      || '#00ffff'],
             ];
             dateFields.forEach(function(pair) {
                 var el = document.getElementById(pair[0]);
                 if (el) el.value = pair[1];
             });
+            // Restore date gradient checkbox
+            var dateGradEl = document.getElementById('dateGradient');
+            if (dateGradEl) {
+                dateGradEl.checked = p.dateGradient || false;
+                toggleDateGradient(); // Apply the gradient state
+            }
             var dBgOpV = document.getElementById('dateBgOpVal');
             if(dBgOpV) dBgOpV.textContent = (p.dateBgOpacity || '30') + '%';
 
