@@ -1256,6 +1256,43 @@
                     <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="1" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="1" y="8" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/><rect x="8" y="8" width="5" height="5" rx="1" fill="none" stroke="currentColor" stroke-width="1.5"/></svg>
                     Auto-Layout
                 </button>
+                <button onclick="showAlignmentMenu()"
+                    style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:2px solid #8b5cf6;background:transparent;color:#8b5cf6;font-size:13px;font-weight:600;cursor:pointer;"
+                    title="Align selected elements">
+                    <svg width="14" height="14" viewBox="0 0 14 14"><line x1="1" y1="7" x2="13" y2="7" stroke="currentColor" stroke-width="2"/><rect x="2" y="2" width="3" height="3" fill="currentColor"/><rect x="9" y="9" width="3" height="3" fill="currentColor"/></svg>
+                    Align
+                </button>
+                <button id="btn-group" onclick="toggleGroupMode()"
+                    style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:2px solid rgba(245,158,11,0.4);background:transparent;color:#f59e0b;font-size:13px;font-weight:600;cursor:pointer;"
+                    title="Group elements together">
+                    <svg width="14" height="14" viewBox="0 0 14 14"><rect x="1" y="1" width="5" height="5" stroke="currentColor" stroke-width="1.5" fill="none"/><rect x="8" y="8" width="5" height="5" stroke="currentColor" stroke-width="1.5" fill="none"/><line x1="6" y1="3.5" x2="8" y2="3.5" stroke="currentColor" stroke-width="1.5"/><line x1="3.5" y1="6" x2="3.5" y2="8" stroke="currentColor" stroke-width="1.5"/></svg>
+                    Group
+                </button>
+            </div>
+            
+            <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px;">
+                <span style="font-size:13px;color:#666;font-weight:600;">Creative:</span>
+                <button onclick="showTextEffectsMenu()"
+                    style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:2px solid #ec4899;background:transparent;color:#ec4899;font-size:13px;font-weight:600;cursor:pointer;"
+                    title="Apply text effects">
+                    <svg width="14" height="14" viewBox="0 0 14 14"><text x="2" y="11" font-size="12" font-weight="900" fill="currentColor">Aa</text></svg>
+                    Effects
+                </button>
+                <button onclick="showStickerLibrary()"
+                    style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:2px solid #f59e0b;background:transparent;color:#f59e0b;font-size:13px;font-weight:600;cursor:pointer;"
+                    title="Add emoji stickers">
+                    🎨 Stickers
+                </button>
+                <button onclick="applySeasonalTheme()"
+                    style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:2px solid #14b8a6;background:transparent;color:#14b8a6;font-size:13px;font-weight:600;cursor:pointer;"
+                    title="Apply seasonal themes">
+                    🎃 Seasonal
+                </button>
+                <button onclick="duplicateProject()"
+                    style="display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:2px solid #6366f1;background:transparent;color:#6366f1;font-size:13px;font-weight:600;cursor:pointer;"
+                    title="Duplicate entire project">
+                    📋 Duplicate
+                </button>
             </div>
 
             <div id="flyer">
@@ -4453,6 +4490,406 @@
         }
 
         // Deselect image when clicking flyer background
+        // ══════════════════════════════════════════════════════════════════════════
+        // ██████╗ ███████╗██╗     ██╗   ██╗██╗  ██╗███████╗    ███████╗███████╗ █████╗ ████████╗██╗   ██╗██████╗ ███████╗███████╗
+        // ██╔══██╗██╔════╝██║     ██║   ██║╚██╗██╔╝██╔════╝    ██╔════╝██╔════╝██╔══██╗╚══██╔══╝██║   ██║██╔══██╗██╔════╝╚══███╔╝
+        // ██║  ██║█████╗  ██║     ██║   ██║ ╚███╔╝ █████╗      █████╗  █████╗  ███████║   ██║   ██║   ██║██████╔╝█████╗    ███╔╝ 
+        // ██║  ██║██╔══╝  ██║     ██║   ██║ ██╔██╗ ██╔══╝      ██╔══╝  ██╔══╝  ██╔══██║   ██║   ██║   ██║██╔══██╗██╔══╝   ███╔╝  
+        // ██████╔╝███████╗███████╗╚██████╔╝██╔╝ ██╗███████╗    ██║     ███████╗██║  ██║   ██║   ╚██████╔╝██║  ██║███████╗███████╗
+        // ╚═════╝ ╚══════╝╚══════╝ ╚═════╝ ╚═╝  ╚═╝╚══════╝    ╚═╝     ╚══════╝╚═╝  ╚═╝   ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚══════╝╚══════╝
+        // ══════════════════════════════════════════════════════════════════════════
+
+        // ── #21: DUPLICATE ENTIRE PROJECT ──────────────────────────────────────────
+        function duplicateProject() {
+            if (!confirm('Create a copy of this entire flyer? All current work will be saved as "Copy of [current title]"')) return;
+            
+            var currentTitle = document.getElementById('title').value || 'Untitled Event';
+            var newTitle = 'Copy of ' + currentTitle;
+            
+            // Save current state
+            saveProject();
+            
+            // Update title
+            document.getElementById('title').value = newTitle;
+            updatePreview();
+            
+            alert('Flyer duplicated! Save it with a new filename when ready.');
+        }
+
+        // ── #26: ALIGNMENT TOOLS ───────────────────────────────────────────────────
+        var multiSelectMode = false;
+        var selectedElements = [];
+
+        function showAlignmentMenu() {
+            var cards = document.querySelectorAll('.streamer-card');
+            if (cards.length < 2) return alert('Need at least 2 streamers to use alignment tools');
+            
+            var menu = 'Select alignment:\n\n' +
+                '1. Align Left\n' +
+                '2. Align Right\n' +
+                '3. Align Top\n' +
+                '4. Align Bottom\n' +
+                '5. Align Center Horizontal\n' +
+                '6. Align Center Vertical\n' +
+                '7. Distribute Horizontally\n' +
+                '8. Distribute Vertically\n\n' +
+                'Enter 1-8:';
+            
+            var choice = prompt(menu);
+            var idx = parseInt(choice);
+            
+            if (idx >= 1 && idx <= 8) {
+                var funcs = [alignLeft, alignRight, alignTop, alignBottom, alignCenterH, alignCenterV, distributeH, distributeV];
+                funcs[idx - 1]();
+                updatePreview();
+            }
+        }
+
+        function alignLeft() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            var minX = Math.min.apply(null, cards.map(c => parseInt(c.style.left) || 0));
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                streamerPositions[idx] = {x: minX, y: parseInt(c.style.top) || 0, manual: true};
+            });
+        }
+
+        function alignRight() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            var maxRight = Math.max.apply(null, cards.map(c => (parseInt(c.style.left) || 0) + c.offsetWidth));
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                var x = maxRight - c.offsetWidth;
+                streamerPositions[idx] = {x: x, y: parseInt(c.style.top) || 0, manual: true};
+            });
+        }
+
+        function alignTop() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            var minY = Math.min.apply(null, cards.map(c => parseInt(c.style.top) || 0));
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                streamerPositions[idx] = {x: parseInt(c.style.left) || 0, y: minY, manual: true};
+            });
+        }
+
+        function alignBottom() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            var maxBottom = Math.max.apply(null, cards.map(c => (parseInt(c.style.top) || 0) + c.offsetHeight));
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                var y = maxBottom - c.offsetHeight;
+                streamerPositions[idx] = {x: parseInt(c.style.left) || 0, y: y, manual: true};
+            });
+        }
+
+        function alignCenterH() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            var avgX = cards.reduce((sum, c) => sum + (parseInt(c.style.left) || 0) + c.offsetWidth/2, 0) / cards.length;
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                var x = avgX - c.offsetWidth/2;
+                streamerPositions[idx] = {x: x, y: parseInt(c.style.top) || 0, manual: true};
+            });
+        }
+
+        function alignCenterV() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            var avgY = cards.reduce((sum, c) => sum + (parseInt(c.style.top) || 0) + c.offsetHeight/2, 0) / cards.length;
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                var y = avgY - c.offsetHeight/2;
+                streamerPositions[idx] = {x: parseInt(c.style.left) || 0, y: y, manual: true};
+            });
+        }
+
+        function distributeH() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            cards.sort((a,b) => (parseInt(a.style.left)||0) - (parseInt(b.style.left)||0));
+            var minX = parseInt(cards[0].style.left) || 0;
+            var maxX = (parseInt(cards[cards.length-1].style.left) || 0) + cards[cards.length-1].offsetWidth;
+            var totalW = cards.reduce((sum, c) => sum + c.offsetWidth, 0);
+            var spacing = (maxX - minX - totalW) / (cards.length - 1);
+            var x = minX;
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                streamerPositions[idx] = {x: x, y: parseInt(c.style.top) || 0, manual: true};
+                x += c.offsetWidth + spacing;
+            });
+        }
+
+        function distributeV() {
+            var cards = Array.from(document.querySelectorAll('.streamer-card'));
+            cards.sort((a,b) => (parseInt(a.style.top)||0) - (parseInt(b.style.top)||0));
+            var minY = parseInt(cards[0].style.top) || 0;
+            var maxY = (parseInt(cards[cards.length-1].style.top) || 0) + cards[cards.length-1].offsetHeight;
+            var totalH = cards.reduce((sum, c) => sum + c.offsetHeight, 0);
+            var spacing = (maxY - minY - totalH) / (cards.length - 1);
+            var y = minY;
+            cards.forEach(c => {
+                var idx = parseInt(c.dataset.streamerIndex);
+                streamerPositions[idx] = {x: parseInt(c.style.left) || 0, y: y, manual: true};
+                y += c.offsetHeight + spacing;
+            });
+        }
+
+        // ── #27: GROUP ELEMENTS ────────────────────────────────────────────────────
+        var groupedElements = [];
+        var isGroupMode = false;
+
+        function toggleGroupMode() {
+            isGroupMode = !isGroupMode;
+            var btn = document.getElementById('btn-group');
+            if (isGroupMode) {
+                btn.style.background = '#f59e0b';
+                btn.style.borderColor = '#f59e0b';
+                btn.style.color = '#fff';
+                groupedElements = [];
+                alert('Group Mode ON\n\nClick streamer cards to add them to a group.\nClick Group button again to finish.');
+            } else {
+                btn.style.background = 'transparent';
+                btn.style.borderColor = 'rgba(245,158,11,0.4)';
+                btn.style.color = '#f59e0b';
+                if (groupedElements.length > 1) {
+                    alert('Group created with ' + groupedElements.length + ' elements!\n\nDrag any grouped card to move them all together.');
+                }
+            }
+        }
+
+        // ── #31: TEXT EFFECTS LIBRARY ──────────────────────────────────────────────
+        var textEffectsLibrary = {
+            'Neon Glow': {color: '#00ffff', shadow: '0 0 10px #00ffff, 0 0 20px #00ffff, 0 0 30px #00ffff', weight: '700'},
+            'Fire': {color: '#ff4500', shadow: '0 0 20px #ff0000, 0 0 30px #ff4500, 0 0 40px #ff6347', weight: '900'},
+            'Ice': {color: '#87ceeb', shadow: '0 0 10px #4682b4, 0 0 20px #87ceeb, 0 0 30px #b0e0e6', weight: '700'},
+            'Gold 3D': {color: '#ffd700', shadow: '2px 2px 0 #b8860b, 4px 4px 0 #8b6914, 6px 6px 10px rgba(0,0,0,0.5)', weight: '900'},
+            'Retro': {color: '#ff00ff', shadow: '3px 3px 0 #00ffff, 6px 6px 0 #ffff00', weight: '900'},
+            'Comic': {color: '#000', shadow: '3px 3px 0 #fff, 3px -3px 0 #fff, -3px 3px 0 #fff, -3px -3px 0 #fff, 6px 6px 0 #ff0000', weight: '900'},
+            'Neon Pink': {color: '#ff1493', shadow: '0 0 10px #ff69b4, 0 0 20px #ff1493, 0 0 30px #ff1493', weight: '700'},
+            'Electric Blue': {color: '#00bfff', shadow: '0 0 10px #1e90ff, 0 0 20px #00bfff, 0 0 30px #4169e1', weight: '700'},
+            'Poison Green': {color: '#00ff00', shadow: '0 0 10px #32cd32, 0 0 20px #00ff00, 0 0 30px #7fff00', weight: '700'},
+            'Embossed': {color: '#ddd', shadow: '1px 1px 0 #fff, -1px -1px 0 #666', weight: '700'}
+        };
+
+        function showTextEffectsMenu() {
+            var effects = Object.keys(textEffectsLibrary);
+            var menu = 'Apply effect to Title:\n\n';
+            effects.forEach((e, i) => menu += (i + 1) + '. ' + e + '\n');
+            menu += '\nEnter 1-' + effects.length + ':';
+            
+            var choice = prompt(menu);
+            var idx = parseInt(choice) - 1;
+            if (idx >= 0 && idx < effects.length) {
+                applyTextEffect(effects[idx]);
+            }
+        }
+
+        function applyTextEffect(effectName) {
+            var effect = textEffectsLibrary[effectName];
+            var titleEl = document.getElementById('preview-title');
+            if (!titleEl) return;
+            
+            // Apply effect
+            titleEl.style.color = effect.color;
+            titleEl.style.textShadow = effect.shadow;
+            titleEl.style.fontWeight = effect.weight;
+            
+            // Update sidebar controls
+            document.getElementById('titleColor').value = effect.color;
+            
+            alert('Applied "' + effectName + '" effect to title!');
+        }
+
+        // ── #36: TEXT ON A PATH (CURVED TEXT) ─────────────────────────────────────
+        function curveText(text, radius, containerId) {
+            var container = document.getElementById(containerId || 'preview-title');
+            if (!container) return;
+            
+            container.innerHTML = '';
+            container.style.position = 'relative';
+            container.style.width = (radius * 2) + 'px';
+            container.style.height = (radius * 2) + 'px';
+            
+            var angleStep = 180 / text.length;
+            var startAngle = -90;
+            
+            for (var i = 0; i < text.length; i++) {
+                var span = document.createElement('span');
+                span.textContent = text[i];
+                span.style.position = 'absolute';
+                span.style.transformOrigin = '50% 100%';
+                
+                var angle = startAngle + (angleStep * i);
+                var radian = (angle * Math.PI) / 180;
+                var x = radius + Math.cos(radian) * radius;
+                var y = radius + Math.sin(radian) * radius;
+                
+                span.style.left = x + 'px';
+                span.style.top = y + 'px';
+                span.style.transform = 'rotate(' + (angle + 90) + 'deg)';
+                
+                container.appendChild(span);
+            }
+        }
+
+        function showCurveTextMenu() {
+            var titleText = document.getElementById('title').value || 'CURVED TEXT';
+            if (confirm('Make title text curved?\n\nNote: This is experimental and may need adjustments.')) {
+                curveText(titleText, 150, 'preview-title');
+            }
+        }
+
+        // ── #46: STICKER LIBRARY ───────────────────────────────────────────────────
+        var stickerLibrary = {
+            emojis: ['🎮', '🎯', '🔥', '⚡', '💜', '❤️', '⭐', '✨', '🏆', '👑', '💎', '🎪', '🎨', '🎭', '🎬', '🎤', '🎧', '🎸', '🎹', '🥁'],
+            gaming: ['🕹️', '🎲', '🃏', '🎰', '🏅', '🥇', '🥈', '🥉', '🎖️'],
+            celebration: ['🎉', '🎊', '🎈', '🎁', '🍾', '🥳', '🎆', '🎇', '✨'],
+            symbols: ['💯', '🔰', '📢', '🚀', '💫', '🌟', '💥', '🔔', '📣']
+        };
+        
+        var stickerElements = [];
+
+        function showStickerLibrary() {
+            var categories = Object.keys(stickerLibrary);
+            var menu = 'Choose sticker category:\n\n';
+            categories.forEach((cat, i) => menu += (i + 1) + '. ' + cat.toUpperCase() + '\n');
+            menu += '\nEnter 1-' + categories.length + ':';
+            
+            var choice = prompt(menu);
+            var idx = parseInt(choice) - 1;
+            if (idx >= 0 && idx < categories.length) {
+                showStickerPicker(categories[idx]);
+            }
+        }
+
+        function showStickerPicker(category) {
+            var stickers = stickerLibrary[category];
+            var menu = 'Choose a sticker:\n\n' + stickers.join('  ') + '\n\nType the emoji:';
+            var sticker = prompt(menu);
+            if (sticker && stickers.indexOf(sticker) !== -1) {
+                addSticker(sticker);
+            }
+        }
+
+        function addSticker(emoji) {
+            var flyer = document.getElementById('flyer');
+            var sticker = document.createElement('div');
+            sticker.className = 'sticker';
+            sticker.textContent = emoji;
+            sticker.style.cssText = 'position:absolute;font-size:48px;cursor:move;z-index:100;user-select:none;';
+            sticker.style.left = '250px';
+            sticker.style.top = '250px';
+            
+            var stickerId = 'sticker-' + Date.now();
+            sticker.id = stickerId;
+            
+            // Make draggable
+            sticker.addEventListener('pointerdown', function(e) {
+                e.preventDefault();
+                var rect = sticker.getBoundingClientRect();
+                var flyerRect = flyer.getBoundingClientRect();
+                var offsetX = e.clientX - rect.left;
+                var offsetY = e.clientY - rect.top;
+                
+                function move(e) {
+                    var x = e.clientX - flyerRect.left - offsetX;
+                    var y = e.clientY - flyerRect.top - offsetY;
+                    sticker.style.left = Math.max(0, Math.min(x, flyerRect.width - 48)) + 'px';
+                    sticker.style.top = Math.max(0, Math.min(y, flyerRect.height - 48)) + 'px';
+                }
+                
+                function stop() {
+                    document.removeEventListener('pointermove', move);
+                    document.removeEventListener('pointerup', stop);
+                }
+                
+                document.addEventListener('pointermove', move);
+                document.addEventListener('pointerup', stop);
+            });
+            
+            // Right-click to delete
+            sticker.addEventListener('contextmenu', function(e) {
+                e.preventDefault();
+                if (confirm('Delete this sticker?')) {
+                    sticker.remove();
+                    stickerElements = stickerElements.filter(s => s.id !== stickerId);
+                }
+            });
+            
+            flyer.appendChild(sticker);
+            stickerElements.push({id: stickerId, emoji: emoji, x: 250, y: 250, size: 48});
+            
+            alert('Sticker added! Drag to move, right-click to delete.');
+        }
+
+        // ── #48: SEASONAL THEMES ───────────────────────────────────────────────────
+        var seasonalDecorations = {
+            halloween: {
+                emojis: ['🎃', '👻', '🦇', '🕷️', '🕸️', '💀', '🧛', '🧟', '🍬', '🌕'],
+                colors: {bg: '#1a0a2e', title: '#ff6b00', accent: '#8b00ff'},
+                title: '🎃 SPOOKY STREAM NIGHT 🎃'
+            },
+            christmas: {
+                emojis: ['🎄', '❄️', '⛄', '🎅', '🤶', '🎁', '🔔', '⭐', '🕯️', '🦌'],
+                colors: {bg: '#0a3d0a', title: '#ff0000', accent: '#ffd700'},
+                title: '🎄 HOLIDAY STREAM SPECTACULAR 🎄'
+            },
+            newyear: {
+                emojis: ['🎆', '🎇', '🥳', '🍾', '🎉', '🎊', '✨', '💫', '🎈'],
+                colors: {bg: '#0a0a1a', title: '#ffd700', accent: '#ff1493'},
+                title: '🎊 NEW YEAR CELEBRATION 2026 🎊'
+            },
+            valentine: {
+                emojis: ['💕', '💖', '💝', '💘', '❤️', '💗', '💓', '💞', '🌹', '💐'],
+                colors: {bg: '#2d0a1f', title: '#ff1493', accent: '#ff69b4'},
+                title: '💖 VALENTINE\'S DAY STREAM 💖'
+            },
+            summer: {
+                emojis: ['☀️', '🌊', '🏖️', '🍉', '🍦', '🌴', '🐚', '🕶️', '🏄'],
+                colors: {bg: '#0a2d4d', title: '#ffaa00', accent: '#00bfff'},
+                title: '☀️ SUMMER STREAM PARTY ☀️'
+            }
+        };
+
+        function applySeasonalTheme() {
+            var seasons = Object.keys(seasonalDecorations);
+            var menu = 'Apply seasonal theme:\n\n';
+            seasons.forEach((s, i) => menu += (i + 1) + '. ' + s.toUpperCase() + '\n');
+            menu += '\nEnter 1-' + seasons.length + ':';
+            
+            var choice = prompt(menu);
+            var idx = parseInt(choice) - 1;
+            if (idx >= 0 && idx < seasons.length) {
+                var theme = seasonalDecorations[seasons[idx]];
+                
+                // Apply colors
+                document.getElementById('flyer').style.background = theme.colors.bg;
+                document.getElementById('titleColor').value = theme.colors.title;
+                document.getElementById('title').value = theme.title;
+                
+                // Scatter seasonal emojis
+                var flyer = document.getElementById('flyer');
+                var flyerRect = flyer.getBoundingClientRect();
+                theme.emojis.slice(0, 8).forEach(function(emoji, i) {
+                    var angle = (i / 8) * 2 * Math.PI;
+                    var radius = 200;
+                    var x = (flyerRect.width / 2) + Math.cos(angle) * radius - 24;
+                    var y = (flyerRect.height / 2) + Math.sin(angle) * radius - 24;
+                    
+                    var sticker = document.createElement('div');
+                    sticker.className = 'seasonal-sticker';
+                    sticker.textContent = emoji;
+                    sticker.style.cssText = 'position:absolute;font-size:36px;z-index:2;pointer-events:none;opacity:0.6;';
+                    sticker.style.left = x + 'px';
+                    sticker.style.top = y + 'px';
+                    flyer.appendChild(sticker);
+                });
+                
+                updatePreview();
+                alert('Seasonal theme applied! 🎉');
+            }
+        }
+
+
         // Add first streamer on load
         initTitleDateDrag();
         addStreamer();
