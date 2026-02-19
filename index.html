@@ -7,6 +7,31 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap');
         
+        /* ── DARK MODE VARIABLES ──────────────────────────────────────────────── */
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --text-primary: #1a1a2e;
+            --text-secondary: #666;
+            --border-color: #e0e0e0;
+            --panel-bg: #ffffff;
+            --input-bg: #ffffff;
+            --shadow: rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode {
+            --bg-primary: #1a1a2e;
+            --bg-secondary: #16213e;
+            --bg-gradient: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            --text-primary: #e0e0e0;
+            --text-secondary: #a0a0a0;
+            --border-color: #3a3a4e;
+            --panel-bg: #2a2a3e;
+            --input-bg: #1e1e2e;
+            --shadow: rgba(0,0,0,0.5);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -15,49 +40,93 @@
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: var(--bg-gradient);
             min-height: 100vh;
             padding: 20px;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }
 
         .container {
-            max-width: 1400px;
+            max-width: 1600px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
-            background: white;
+            grid-template-columns: 380px 1fr;
+            gap: 24px;
+            background: var(--panel-bg);
             border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 24px;
+            box-shadow: 0 20px 60px var(--shadow);
         }
 
         h1 {
             grid-column: 1 / -1;
             text-align: center;
             color: #9146ff;
-            font-size: 2.5em;
-            margin-bottom: 20px;
+            font-size: 2.2em;
+            margin-bottom: 12px;
             font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 16px;
+        }
+
+        .dark-mode-toggle {
+            background: var(--input-bg);
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 8px 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        .dark-mode-toggle:hover {
+            border-color: #9146ff;
+            transform: scale(1.05);
         }
 
         .editor-panel {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
+            max-height: calc(100vh - 180px);
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+
+        .editor-panel::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .editor-panel::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .editor-panel::-webkit-scrollbar-thumb {
+            background: #9146ff;
+            border-radius: 4px;
         }
 
         .section {
-            background: #f7f7f7;
-            padding: 20px;
+            background: var(--bg-secondary);
+            padding: 18px;
             border-radius: 12px;
-            border: 2px solid #e0e0e0;
+            border: 2px solid var(--border-color);
+            transition: all 0.3s ease;
         }
 
         .section h2 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: 1.3em;
+            color: var(--text-primary);
+            margin-bottom: 14px;
+            font-size: 1.2em;
             display: flex;
             align-items: center;
             gap: 10px;
@@ -70,26 +139,42 @@
         }
 
         .form-group {
-            margin-bottom: 15px;
+            margin-bottom: 14px;
         }
 
         label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
+            margin-bottom: 6px;
+            color: var(--text-secondary);
             font-weight: 600;
-            font-size: 0.9em;
+            font-size: 0.88em;
         }
 
         input[type="text"],
         input[type="date"],
         input[type="time"],
         input[type="url"],
-        select {
+        select,
+        textarea {
             width: 100%;
             padding: 10px;
-            border: 2px solid #ddd;
+            border: 2px solid var(--border-color);
             border-radius: 8px;
+            background: var(--input-bg);
+            color: var(--text-primary);
+            transition: all 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="date"]:focus,
+        input[type="time"]:focus,
+        input[type="url"]:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #9146ff;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(145, 70, 255, 0.1);
+        }
             font-size: 1em;
             transition: border-color 0.3s;
             color: #333;
@@ -495,6 +580,11 @@
             to { transform: rotate(360deg); }
         }
 
+        @keyframes fadeOut {
+            from { opacity: 1; transform: scale(1); }
+            to { opacity: 0; transform: scale(0.5); }
+        }
+
         .status-message {
             padding: 10px;
             border-radius: 8px;
@@ -523,7 +613,13 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎮 AI Twitch Flyer Maker</h1>
+        <h1>
+            🎮 AI Twitch Flyer Maker
+            <button onclick="toggleDarkMode()" class="dark-mode-toggle" title="Toggle dark mode">
+                <span id="dark-mode-icon">🌙</span>
+                <span id="dark-mode-text">Dark</span>
+            </button>
+        </h1>
         
         <div class="editor-panel">
             <div class="section">
@@ -1293,6 +1389,15 @@
                     title="Duplicate entire project">
                     📋 Duplicate
                 </button>
+            </div>
+            
+            <div style="background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:8px;padding:12px;margin-top:8px;">
+                <div style="font-size:11px;color:var(--text-secondary);line-height:1.5;">
+                    <strong style="color:#10b981;">💡 Quick Tips:</strong><br>
+                    • <strong>Stickers:</strong> Click button → Click emoji → Drag to move, right-click to delete<br>
+                    • <strong>Keyboard:</strong> Delete key removes selected item, Arrow keys nudge (Shift = 10px)<br>
+                    • <strong>Dark Mode:</strong> Toggle with moon/sun button in header
+                </div>
             </div>
 
             <div id="flyer">
@@ -4749,25 +4854,49 @@
         var stickerElements = [];
 
         function showStickerLibrary() {
-            var categories = Object.keys(stickerLibrary);
-            var menu = 'Choose sticker category:\n\n';
-            categories.forEach((cat, i) => menu += (i + 1) + '. ' + cat.toUpperCase() + '\n');
-            menu += '\nEnter 1-' + categories.length + ':';
+            // Create visual sticker picker overlay
+            var overlay = document.createElement('div');
+            overlay.id = 'sticker-picker-overlay';
+            overlay.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.8);z-index:10000;display:flex;align-items:center;justify-content:center;';
             
-            var choice = prompt(menu);
-            var idx = parseInt(choice) - 1;
-            if (idx >= 0 && idx < categories.length) {
-                showStickerPicker(categories[idx]);
-            }
+            var panel = document.createElement('div');
+            panel.style.cssText = 'background:#2a2a3e;border-radius:16px;padding:24px;max-width:600px;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.5);';
+            
+            var categories = Object.keys(stickerLibrary);
+            var html = '<div style="color:#fff;font-size:24px;font-weight:700;margin-bottom:16px;text-align:center;">🎨 Choose a Sticker</div>';
+            
+            categories.forEach(function(cat) {
+                html += '<div style="margin-bottom:20px;">';
+                html += '<div style="color:#9146ff;font-size:16px;font-weight:700;margin-bottom:8px;text-transform:uppercase;">' + cat + '</div>';
+                html += '<div style="display:grid;grid-template-columns:repeat(8,1fr);gap:8px;">';
+                
+                stickerLibrary[cat].forEach(function(emoji) {
+                    html += '<button onclick="addStickerAndClose(\'' + emoji + '\')" ' +
+                        'style="font-size:32px;padding:8px;background:rgba(145,70,255,0.1);border:2px solid rgba(145,70,255,0.3);' +
+                        'border-radius:8px;cursor:pointer;transition:all 0.2s;" ' +
+                        'onmouseover="this.style.background=\'rgba(145,70,255,0.3)\';this.style.transform=\'scale(1.2)\';" ' +
+                        'onmouseout="this.style.background=\'rgba(145,70,255,0.1)\';this.style.transform=\'scale(1)\';">' +
+                        emoji + '</button>';
+                });
+                
+                html += '</div></div>';
+            });
+            
+            html += '<button onclick="closeStickerPicker()" style="width:100%;padding:12px;margin-top:16px;background:#ef4444;color:#fff;border:none;border-radius:8px;font-size:16px;font-weight:700;cursor:pointer;">Close</button>';
+            
+            panel.innerHTML = html;
+            overlay.appendChild(panel);
+            document.body.appendChild(overlay);
         }
 
-        function showStickerPicker(category) {
-            var stickers = stickerLibrary[category];
-            var menu = 'Choose a sticker:\n\n' + stickers.join('  ') + '\n\nType the emoji:';
-            var sticker = prompt(menu);
-            if (sticker && stickers.indexOf(sticker) !== -1) {
-                addSticker(sticker);
-            }
+        function addStickerAndClose(emoji) {
+            addSticker(emoji);
+            closeStickerPicker();
+        }
+
+        function closeStickerPicker() {
+            var overlay = document.getElementById('sticker-picker-overlay');
+            if (overlay) overlay.remove();
         }
 
         function addSticker(emoji) {
@@ -4775,12 +4904,20 @@
             var sticker = document.createElement('div');
             sticker.className = 'sticker';
             sticker.textContent = emoji;
-            sticker.style.cssText = 'position:absolute;font-size:48px;cursor:move;z-index:100;user-select:none;';
+            sticker.style.cssText = 'position:absolute;font-size:48px;cursor:move;z-index:100;user-select:none;transition:transform 0.1s;';
             sticker.style.left = '250px';
             sticker.style.top = '250px';
             
             var stickerId = 'sticker-' + Date.now();
             sticker.id = stickerId;
+            
+            // Hover effect
+            sticker.addEventListener('mouseenter', function() {
+                sticker.style.transform = 'scale(1.2)';
+            });
+            sticker.addEventListener('mouseleave', function() {
+                sticker.style.transform = 'scale(1)';
+            });
             
             // Make draggable
             sticker.addEventListener('pointerdown', function(e) {
@@ -4790,6 +4927,8 @@
                 var offsetX = e.clientX - rect.left;
                 var offsetY = e.clientY - rect.top;
                 
+                sticker.style.cursor = 'grabbing';
+                
                 function move(e) {
                     var x = e.clientX - flyerRect.left - offsetX;
                     var y = e.clientY - flyerRect.top - offsetY;
@@ -4798,6 +4937,7 @@
                 }
                 
                 function stop() {
+                    sticker.style.cursor = 'move';
                     document.removeEventListener('pointermove', move);
                     document.removeEventListener('pointerup', stop);
                 }
@@ -4809,16 +4949,15 @@
             // Right-click to delete
             sticker.addEventListener('contextmenu', function(e) {
                 e.preventDefault();
-                if (confirm('Delete this sticker?')) {
+                sticker.style.animation = 'fadeOut 0.3s';
+                setTimeout(function() {
                     sticker.remove();
                     stickerElements = stickerElements.filter(s => s.id !== stickerId);
-                }
+                }, 300);
             });
             
             flyer.appendChild(sticker);
             stickerElements.push({id: stickerId, emoji: emoji, x: 250, y: 250, size: 48});
-            
-            alert('Sticker added! Drag to move, right-click to delete.');
         }
 
         // ── #48: SEASONAL THEMES ───────────────────────────────────────────────────
@@ -4889,6 +5028,28 @@
             }
         }
 
+
+        // ── DARK MODE ──────────────────────────────────────────────────────────────
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            var isDark = document.body.classList.contains('dark-mode');
+            
+            // Update button
+            document.getElementById('dark-mode-icon').textContent = isDark ? '☀️' : '🌙';
+            document.getElementById('dark-mode-text').textContent = isDark ? 'Light' : 'Dark';
+            
+            // Save preference
+            localStorage.setItem('darkMode', isDark ? 'enabled' : 'disabled');
+        }
+
+        // Load saved dark mode preference
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            if (document.getElementById('dark-mode-icon')) {
+                document.getElementById('dark-mode-icon').textContent = '☀️';
+                document.getElementById('dark-mode-text').textContent = 'Light';
+            }
+        }
 
         // Add first streamer on load
         initTitleDateDrag();
